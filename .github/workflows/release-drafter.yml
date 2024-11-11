@@ -11,8 +11,10 @@ on:
 jobs:
   release_drafter:
     permissions:
-      contents: write
-      issues: write
+        contents: write
+        pull-requests: write
+        id-token: write
+        issues: write
 
     runs-on: ubuntu-latest
 
