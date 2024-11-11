@@ -29,20 +29,3 @@ jobs:
           config-name: 'release-drafter.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
-
-    #   - name: Set up GitHub CLI
-    #     uses: cli/cli@v2
-    #     with:
-    #       gh-version: '2.25.0'  # Adjust the version if needed
-
-    #   - name: Trigger Release Drafter
-    #     run: |
-    #       # Get PRs from the feature branch (which you want to simulate as the main branch)
-    #       gh pr list --base ${{ github.event.inputs.branch }} --head ${{ github.event.inputs.branch }} --json number,title,author,labels -L 100 \
-    #         | jq -r '.[] | select(.labels | any(.name == "feature")) | "- \(.title) @\(.author.login) (#\(.number))"' \
-    #         > release_notes.txt
-
-    #       # Create the release draft
-    #       gh release create v${{ github.run_id }} release_notes.txt \
-    #         --title "Draft Release v${{ github.run_id }}" \
-    #         --notes-file release_notes.txt --draft
