@@ -21,8 +21,7 @@ jobs:
         with:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: '.github/release-drafter.yml'
-        env:
-            GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
     #   - name: Set up GitHub CLI
     #     uses: cli/cli@v2
