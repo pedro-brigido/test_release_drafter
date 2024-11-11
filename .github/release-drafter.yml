@@ -40,6 +40,8 @@ autolabeler:
   - label: 'enhancement'
     branch:
       - '/feature\/.+/'
+      
+commitish: main
 
 template: |
   ## Changes
