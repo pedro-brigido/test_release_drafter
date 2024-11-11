@@ -1,0 +1,40 @@
+name: "Release Drafter Test"
+
+on:
+    push:
+        branches:
+        - main
+    pull_request:
+        # pull_request event is required only for autolabeler
+        types: [opened, reopened, synchronize]
+
+jobs:
+  release_drafter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update Release Draft with Release Drafter
+        uses: release-drafter/release-drafter@v5
+        with:
+          # You can configure Release Drafter here with a custom config file if needed
+          config-name: '.github/release-drafter.yml'
+          
+    #   - name: Set up GitHub CLI
+    #     uses: cli/cli@v2
+    #     with:
+    #       gh-version: '2.25.0'  # Adjust the version if needed
+
+    #   - name: Trigger Release Drafter
+    #     run: |
+    #       # Get PRs from the feature branch (which you want to simulate as the main branch)
+    #       gh pr list --base ${{ github.event.inputs.branch }} --head ${{ github.event.inputs.branch }} --json number,title,author,labels -L 100 \
+    #         | jq -r '.[] | select(.labels | any(.name == "feature")) | "- \(.title) @\(.author.login) (#\(.number))"' \
+    #         > release_notes.txt
+
+    #       # Create the release draft
+    #       gh release create v${{ github.run_id }} release_notes.txt \
+    #         --title "Draft Release v${{ github.run_id }}" \
+    #         --notes-file release_notes.txt --draft
