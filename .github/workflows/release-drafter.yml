@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Update Release Draft with Release Drafter
+        id: release
         uses: release-drafter/release-drafter@v6
         with:
           # You can configure Release Drafter here with a custom config file if needed
@@ -33,3 +34,18 @@ jobs:
           commitish: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
+
+      - name: Process new_tag
+        id: process_new_tag
+        run: |
+            echo "new_tag=${{ steps.release.outputs.tag_name }}" >> $GITHUB_ENV
+
+      - name: Create and Push New Tag
+        if: ${{ env.new_tag }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag ${{ env.new_tag }}
+          git push origin ${{ env.new_tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
