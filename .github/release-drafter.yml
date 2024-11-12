@@ -47,6 +47,6 @@ commitish: main
 publish: true
 
 template: |
-  ## Changes
+  ## Changes upcoming
 
   $CHANGES
