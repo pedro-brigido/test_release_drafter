@@ -1,9 +1,11 @@
 name: "Release Drafter Test"
 
 on:
-  pull_request:
-      branches: main
-      types: [opened, reopened, synchronize]
+    push:
+        branches:
+            - main
+    pull_request:
+        types: [opened, reopened, synchronize]
 jobs:
   release_drafter:
     permissions:
@@ -22,7 +24,7 @@ jobs:
         with:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: 'release-drafter.yml'
-          commitish: develop
+          commitish: main
           # publish: true #sd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
