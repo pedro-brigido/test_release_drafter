@@ -44,9 +44,7 @@ autolabeler:
       
 commitish: main
 
-# publish: true
-
 template: |
-  ## Changes upcoming
+  ## Version changelog: $RESOLVED_VERSION
 
   $CHANGES
