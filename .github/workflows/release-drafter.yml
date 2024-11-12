@@ -4,9 +4,9 @@ on:
     push:
         branches:
             - main
-    # pull_request:
-    #     # pull_request event is required only for autolabeler
-    #     types: [opened, reopened, synchronize]
+    pull_request:
+        # pull_request event is required only for autolabeler
+        types: [opened, reopened, synchronize]
 
 permissions:
   contents: read
@@ -32,21 +32,6 @@ jobs:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: 'release-drafter.yml'
           commitish: main
-          publish: true #sd
+          # publish: true #sd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
-
-      - name: Process new_tag
-        id: process_new_tag
-        run: |
-            echo "new_tag=${{ steps.release.outputs.tag_name }}" >> $GITHUB_ENV
-
-      - name: Create and Push New Tag
-        if: ${{ env.new_tag }}
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git tag ${{ env.new_tag }}
-          git push origin ${{ env.new_tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

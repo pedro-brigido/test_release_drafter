@@ -44,7 +44,7 @@ autolabeler:
       
 commitish: main
 
-publish: true
+# publish: true
 
 template: |
   ## Changes upcoming
