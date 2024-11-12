@@ -1,24 +1,14 @@
 name: "Release Drafter Test"
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        # pull_request event is required only for autolabeler
-        branches: main
-        types: [opened, reopened, synchronize]
-
-permissions:
-  contents: read
-
+  pull_request:
+      branches: main
+      types: [opened, reopened, synchronize]
 jobs:
   release_drafter:
     permissions:
         contents: write
         pull-requests: write
-        id-token: write
-        issues: write
 
     runs-on: ubuntu-latest
 
@@ -32,7 +22,7 @@ jobs:
         with:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: 'release-drafter.yml'
-          commitish: main
+          commitish: develop
           # publish: true #sd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
