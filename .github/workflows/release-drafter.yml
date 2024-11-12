@@ -6,6 +6,7 @@ on:
             - main
     pull_request:
         # pull_request event is required only for autolabeler
+        branches: main
         types: [opened, reopened, synchronize]
 
 permissions:
