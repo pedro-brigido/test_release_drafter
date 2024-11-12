@@ -47,4 +47,8 @@ commitish: main
 template: |
   ## Version changelog: $RESOLVED_VERSION
 
-  $CHANGES
+  ### Merged changes
+    $CHANGES
+
+  ### Pull requests
+    $URL - $BASE_REF_NAME - $HEAD_REF_NAME
