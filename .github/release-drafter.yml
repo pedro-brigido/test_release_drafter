@@ -1,6 +1,6 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
-version-template: "$MAJOR.$MINOR.$PATCH"
+version-template: "$MAJOR.$MINOR.$PATCH" #test
 categories:
   - title: '🚀 Features'
     labels:
