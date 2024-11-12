@@ -32,7 +32,7 @@ jobs:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: 'release-drafter.yml'
           commitish: main
-          publish: true #sd
+          # publish: true #sd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
 
