@@ -20,7 +20,7 @@ jobs:
       - name: Fetch last tag
         id: fetch_last_tag
         run: |
-          LAST_TAG=$(git tag -l 'v*.*.*' | sort -V | tail -n 1 | sed 's/^v//')
+          LAST_TAG=$(git tag -l 'v*.*.*' | sort -V | tail -n 1)
           echo "LAST_TAG=$LAST_TAG" >> $GITHUB_ENV
 
       - name: Install yq
@@ -31,7 +31,7 @@ jobs:
       - name: Update dbt_project.yml version
         run: |
           # sudo apt-get update && sudo apt-get install -y yq
-          new_version=${{ env.LAST_TAG }}
+          new_version= echo ${{ env.LAST_TAG }} | sed 's/^v//'
           yq eval ".version = \"$new_version\"" -i dbt_project.yml
           echo "New version: $new_version"
         env:
