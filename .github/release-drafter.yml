@@ -1,6 +1,6 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
-version-template: "$MAJOR.$MINOR.$PATCH" #test
+version-template: "$MAJOR.$MINOR.$PATCH"
 categories:
   - title: '🚀 Features'
     labels:
@@ -9,13 +9,15 @@ categories:
   - title: '🐛 Bug Fixes'
     labels:
       - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
+  - title: '📃 Documentation'
+    label: 'documentation'
+  - title: '🔬 Others'
+    labels:
+      - 'refactor'
+      - 'test'
+      - 'ci'
 change-template: |
-  - $TITLE @$AUTHOR (#$NUMBER)
-  - Pull requests: $URL - $BASE_REF_NAME - $HEAD_REF_NAME
+  - $TITLE @$AUTHOR (#$NUMBER) - [$BASE_REF_NAME <- $HEAD_REF_NAME]
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
@@ -33,16 +35,34 @@ autolabeler:
   - label: 'documentation'
     files:
       - '*.md'
+    title:
+      - '/docs:/i'
     branch:
-      - '/docs{0,1}\/.+/'
-  - label: 'bug'
+      - '/doc{0,1}\/.+/'
+  - label: 'fix'
     branch:
       - '/fix\/.+/'
+      - '/bug\/.+/'
+      - '/bugfix\/.+/'
+      - '/hotfix\/.+/'
     title:
       - '/fix/i'
-  - label: 'enhancement'
+  - label: 'feature'
     branch:
       - '/feature\/.+/'
+    title:
+      - '/feat:/i'
+  - label: 'refactor'
+    branch: 
+      - '/refactor\/.+/'
+    title:
+      - '/refactor:/i'
+  - label: 'ci'
+    title:
+      - '/ci:/i'
+  - label: 'test'
+    title:
+      - '/test:/i'
       
 commitish: main
 

@@ -1,0 +1,173 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'bayer_dbt'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'bayer_dbt'
+
+#   surrogate_key_treat_nulls_as_empty_strings: true
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Project variables
+
+# Parameters to be referenced throughout the project,
+#including in models, macros, and other configurable files.
+
+# A variable that is used in the source macro so that data samples are used instead of the entire dataset in dev and qa targets.
+#To add a new table, include it in the list of the variable.
+
+vars:
+  table_name: ['stg_br_iqvia_sales_full_market_detail']
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+models:
+  bayer_dbt:
+    +on_schema_change: "sync_all_columns"
+    +persist_docs:
+      relation: true
+      columns: true
+    # Config indicated by + and applies to all files under models/example/
+        # If samples are enabled for any source, do the following:
+        # samples:
+        #   +enabled: |
+        #     {{ true if target.name == 'samples' else false }}
+        #   +schema: raw_samples
+        #   +tags: samples
+        #   +materialized: table
+        #  +post-hook:
+            # Here you need to change "analysts" to whatever role people working
+            # in dbt are part of.
+          #  - "grant select on {{ this }} to analysts"
+        # +grants: # This does not work on postgres (it seems)
+        #     select: ['bi_user']
+
+    master_data:
+      staging: &staging 
+        +materialized: table
+        +schema: staging
+      common: &common
+        +materialized: table
+        +tags:
+          - common
+        +schema: common
+      marts: &marts
+        +materialized: table
+        +tags:
+          - marts
+        +schema: common
+
+    regions:
+      brazil:
+        +tags:
+          - brazil
+          - br
+        staging:
+          <<: *staging
+          +schema: staging
+        intermediate: &intermediate
+          +materialized: table
+          +tags:
+            - int
+          +persist_docs:
+            relation: true
+            columns: true
+          +schema: brazil
+        marts:
+          <<: *marts
+          +schema: brazil
+
+      conosur:
+        +tags:
+          - conosur
+          - br
+        staging:
+          <<: *staging
+          +schema: staging
+        intermediate:
+          <<: *intermediate
+          +schema: conosur
+        marts:
+          <<: *marts
+          +schema: conosur
+
+      mexico:
+        +tags:
+          - mexico
+        staging:
+          <<: *staging
+          +schema: staging
+        intermediate:
+          <<: *intermediate
+          +schema: mexico
+        marts:
+          <<: *marts
+          +schema: mexico
+      paca:
+        +tags:
+          - paca
+        staging:
+          <<: *staging
+          +schema: staging
+        intermediate:
+          <<: *intermediate
+          +schema: paca
+        marts:
+          <<: *marts
+          +schema: paca
+
+      latam:
+        +tags:
+          - latam
+        staging:
+          <<: *staging
+          +schema: staging
+        intermediate:
+          <<: *intermediate
+          +schema: latam
+        marts:
+          <<: *marts
+          +schema: latam
+
+  elementary:
+    +schema: governance
+    +tags: eds
+    +enabled: "{{ target.name =='prod' }}"
+
+  dbt_project_evaluator:
+    +persist_docs:
+      relation: true
+      columns: true
+    +on_schema_change: "sync_all_columns"
+    +schema: governance
+    +enabled: "{{ target.name =='qa' }}"
+
+seeds:
+  bayer_dbt:
+    +quote_columns: true
+    +schema: raw_data
+    regions:
+      mexico:
+        +schema: raw_data
