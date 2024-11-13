@@ -3,7 +3,7 @@
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 name: 'bayer_dbt'
-version: 'v0.1.1'
+version: ''
 config-version: 2
 # This setting configures which "profile" dbt uses for this project.
 profile: 'bayer_dbt'
