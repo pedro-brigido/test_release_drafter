@@ -1,0 +1,32 @@
+name: "Release Drafter for Develop with Date Tagging"
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  release_drafter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Date for Release Tag
+        run: |
+          # Use the current date in YYYYMMDD format
+          DATE=$(date +'%Y%m%d')
+          echo "DATE=$DATE" >> $GITHUB_ENV
+
+      - name: Update Release Draft with Release Drafter
+        id: release
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: 'release-drafter.develop.yml'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATE: ${{ env.DATE }}
