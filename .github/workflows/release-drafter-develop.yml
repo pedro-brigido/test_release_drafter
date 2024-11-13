@@ -27,6 +27,7 @@ jobs:
         uses: release-drafter/release-drafter@v6
         with:
           config-name: 'release-drafter.develop.yml'
+          name-template: "Develop Release ${{ env.DATE }}"
+          tag-template: "develop-${{ env.DATE }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DATE: ${{ env.DATE }}
