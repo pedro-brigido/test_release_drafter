@@ -23,9 +23,14 @@ jobs:
           LAST_TAG=$(git tag -l 'v*.*.*' | sort -V | tail -n 1 | sed 's/^v//')
           echo "LAST_TAG=$LAST_TAG" >> $GITHUB_ENV
 
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.15.1/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
       - name: Update dbt_project.yml version
         run: |
-          sudo apt-get update && sudo apt-get install -y yq
+          # sudo apt-get update && sudo apt-get install -y yq
           new_version=${{ env.LAST_TAG }}
           yq eval ".version = \"$new_version\"" -i dbt_project.yml
           echo "New version: $new_version"
