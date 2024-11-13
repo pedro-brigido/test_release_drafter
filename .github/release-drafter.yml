@@ -63,6 +63,10 @@ autolabeler:
   - label: 'test'
     title:
       - '/test:/i'
+  - label: 'major'
+    body: 
+      - '(?i)\[\s*x\s*\] major'
+
       
 commitish: main
 
