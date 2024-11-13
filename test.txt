@@ -1,9 +1,1 @@
-Hello
-hello
-hello again
-testt
-again
-pulled main
-test draft
-test after publish draft
-test after merge
+reset tests
