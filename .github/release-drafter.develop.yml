@@ -15,3 +15,9 @@ categories:
       - 'bug'
   - title: '🧰 Maintenance'
     label: 'chore'
+
+template: |
+  ## Version changelog: $RESOLVED_VERSION
+
+  ### Merged changes
+    $CHANGES
