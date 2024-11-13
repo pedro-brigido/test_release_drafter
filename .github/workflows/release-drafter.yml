@@ -4,7 +4,7 @@ on:
     push:
         branches:
             - main
-    pull_request:
+    pull_request_target:
         branches: 
             - main
         types: [opened, reopened, synchronize]
@@ -27,6 +27,6 @@ jobs:
           # You can configure Release Drafter here with a custom config file if needed
           config-name: 'release-drafter.yml'
           commitish: main
-          # publish: true #sd
+          # publish: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #TEST
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

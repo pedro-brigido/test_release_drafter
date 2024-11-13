@@ -1,0 +1,32 @@
+name: "Publish Tag on Release Publish"
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  publish_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        fetch-depth: 0
+        fetch-tags: true
+
+      - name: Fetch last tag
+        id: fetch_last_tag
+        run: |
+          LAST_TAG=$(git tag -l 'v*.*.*' | sort -V | tail -n 1 | sed 's/^v//')
+          echo "LAST_TAG=$LAST_TAG" >> $GITHUB_ENV
+
+      - name: Update dbt_project.yml version
+        run: |
+          sudo apt-get update && sudo apt-get install -y yq
+          new_version=${{ env.LAST_TAG }}
+          yq eval ".version = \"$new_version\"" -i dbt_project.yml
+          echo "New version: $new_version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
